@@ -12,7 +12,7 @@ public class ClienteService {
     private final ClienteRepository repository;
 
     public ClienteService(ClienteRepository repository) {
-       this.repository = repository;
+        this.repository = repository;
     }
 
     public Cliente build(ClienteDTO dto) {
@@ -32,17 +32,26 @@ public class ClienteService {
 
         Cliente cliente = build(dto);
         cliente.setHabilitado(true);
-        return repository.save(cliente);
+        return repository.save(cliente); //insert into ...
     }
 
     public List<Cliente> listar() {
 
-        return repository.findAll(); //SELECT * FROM Cliente
+        return repository.findAll(); // SELECT * FROM Cliente
     }
 
     public Cliente buscarPorId(Long id) {
 
-        return repository.findById(id).get(); //SELECT * FROM Cliente WHERE id = ?
+        return repository.findById(id).get(); // SELECT * FROM Cliente WHERE id = ?
+    }
+
+    @Transactional
+    public void remover(Long id) {
+
+        Cliente cliente = repository.findById(id).get();
+        cliente.setHabilitado(false);
+
+        repository.save(cliente); //update ...
     }
 
 }
